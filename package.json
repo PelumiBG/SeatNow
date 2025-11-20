@@ -1,9 +1,11 @@
 {
   "name": "seatnow",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "An event that serves as a place where organizer can arrange an event",
+  "main": "app.js",
+  "type": "module",
   "scripts": {
+    "start": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,20 +15,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/PelumiBG/SeatNow/issues"
   },
   "homepage": "https://github.com/PelumiBG/SeatNow#readme",
-  "devDependencies": {
+  "dependencies": {
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.20.0",
-    "nodemailer": "^7.0.10",
-    "nodemon": "^3.1.11"
+    "nodemailer": "^7.0.10"
   },
-  "dependencies": {
-    "dotenv": "^17.2.3"
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
