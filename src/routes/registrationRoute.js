@@ -5,3 +5,5 @@ import express from 'express';
 const router = express.Router();
 
 router.post('/register-event', registerAttendee);
+
+export default router;

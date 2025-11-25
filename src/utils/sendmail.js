@@ -5,7 +5,7 @@ export const sendEventBookingMail = async (email , name) => {
         await transporter.sendMail({
             from:`SeatNow <${process.env.EMAIL_FROM}>`,
             to:email,
-            subject:`Your Event has been booked ${date.now}`,
+            subject:`Your Event has been booked`,
             html:`<!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -31,7 +31,7 @@ export const sendWelcomeEmail = async (email, name) => {
         await transporter.sendMail({
             from:`SeatNow <${process.env.EMAIL_USER}>`,
             to:email,
-            subject:`WELCOME TO SEATNOW ${Date.now()}`,
+            subject:`WELCOME TO SEATNOW`,
             html:`<!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -43,7 +43,9 @@ export const sendWelcomeEmail = async (email, name) => {
                         <p>Your seat has been booked keep checking email for more info</p>
                         <p>Enjoy seamless service</p>
                     </div>
-                    <footer>do not reply to this email</footer>
+                    <footer>
+                        <p>do not reply to this email</p>
+                    </footer>
                 </body>
                 </html>`
         });

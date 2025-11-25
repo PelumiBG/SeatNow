@@ -1,11 +1,11 @@
-import Event from "../models/event.js";
+import {Event}from "../models/event.js";
 
 export const createEvent = async (req, res) => {
     try{
         const { title, description, location, date, capacity } = req.body;
 
-        const existEvent = await Event.findOne({ date });
-        if(!existEvent) return res.status(403).json({status:false, message:'There is an event booked for thhis day'});
+        const existEvent = await Event.findOne({where: date });
+        if(existEvent) return res.status(403).json({status:false, message:'There is an event booked for thhis day'});
 
         const event = await Event.create({
             title,
@@ -20,3 +20,17 @@ export const createEvent = async (req, res) => {
         res.status(503).json({status: false, message:err.message})
     }
 };
+
+export const listAllEvent = async (req, res) => {
+    try{
+        const event = await Event.findAll({order: ['createdAt']});
+
+        res.status(200).json({status:true,
+            message:'List of all event',
+            count: event.length,
+            data:event
+        })
+    }catch(err){
+        res.status(500).json({status: true, message:err.message})
+    }
+}

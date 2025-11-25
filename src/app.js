@@ -1,11 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { connectDatabase } from './configs/db.js';
+import { sequelize } from './configs/db.js';
 import { errorHandler } from './middlewares/erorHandler.js';
 import userRoute from './routes/authRoute.js';
+import eventRoute from './routes/eventRoute.js';
+import attendeeRoute from './routes/registrationRoute.js';
 
 dotenv.config();
-await connectDatabase();
+// await connectDatabase();
 
 const app = express();
 
@@ -19,12 +21,22 @@ app.get('/', (req, res) => {
 });
 
 // API endpoint
-app.use('/api/user', userRoute)
+app.use('/api/user', userRoute);
+app.use('/api/admin', eventRoute);
+app.use('/api/reg', attendeeRoute)
 
 // Error Handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () =>
-console.log(`Server Running ${PORT}`)
-);
+
+sequelize
+.sync({alter:true})
+.then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server running on ${PORT}`)
+    })
+})
+.catch((err) => {
+    console.log('Database connection failed', err)
+});

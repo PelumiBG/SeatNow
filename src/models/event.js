@@ -1,13 +1,33 @@
-import mongoose, { Model } from 'mongoose';
+import { DataTypes, Sequelize } from "sequelize";
+import sequelize from "../configs/db.js";
 
-const eventSchema = new mongoose.Schema({
-    title:{type:String,required:true},
-    description:{type:String, required:true},
-    date: Date,
-    location:{type:String, required:true},
-    capacity:{type:Number,min:1,max:1000}
-}, {timestamps: true}
-);
-
-const Event = mongoose.model('Event', eventSchema);
-export default Event;
+export const Event = sequelize.define('Event',{
+    eventId: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey:true
+    },
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    location: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    capacity: {
+        type: DataTypes.INTEGER,
+        allowNull:false,
+        validate: {
+            min:200, max:400
+        }
+    },
+    date: {
+        type:DataTypes.INTEGER,
+        allowNull: false
+    }
+}, {timestamps: true});
