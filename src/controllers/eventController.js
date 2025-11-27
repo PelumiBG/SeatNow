@@ -33,4 +33,26 @@ export const listAllEvent = async (req, res) => {
     }catch(err){
         res.status(500).json({status: true, message:err.message})
     }
+};
+
+export const deleteEvent = async (req, res) => {
+    try{
+        const { eventId } = req.params.eventId;
+
+        const existEvent = await Event.findOne({where:{id: eventId}});
+
+        if(!existEvent) return res.status(404).json({status: false, message:'Event Not Listed'});
+        
+        await existEvent.destroy();
+
+        res.status(200).
+        json({
+            status: true,
+            message:'Event Deleted Successfully'
+        })
+    }catch (err) {
+        res.status(503).json({status:false,
+            message:err.message
+        })
+    }
 }

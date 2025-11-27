@@ -3,7 +3,7 @@ import { transporter } from "../services/emailService.js";
 export const sendEventBookingMail = async (email , name) => {
     try{
         await transporter.sendMail({
-            from:`SeatNow <${process.env.EMAIL_FROM}>`,
+            from:`SeatNow <${process.env.EMAIL_FROM || 'seatnowapp@gmail.com'}>`,
             to:email,
             subject:`Your Event has been booked`,
             html:`<!DOCTYPE html>

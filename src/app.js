@@ -5,9 +5,11 @@ import { errorHandler } from './middlewares/erorHandler.js';
 import userRoute from './routes/authRoute.js';
 import eventRoute from './routes/eventRoute.js';
 import attendeeRoute from './routes/registrationRoute.js';
+import appAdmin from './services/admin.js';
 
 dotenv.config();
 // await connectDatabase();
+
 
 const app = express();
 
@@ -30,13 +32,20 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 
-sequelize
-.sync({alter:true})
-.then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on ${PORT}`)
-    })
-})
-.catch((err) => {
-    console.log('Database connection failed', err)
-});
+const startServer = async (req, res) => {
+    try{
+        await sequelize.authenticate("Database Connected");
+
+        await sequelize.sync({alter: true});
+
+        await appAdmin();
+
+        app.listen(PORT, () => {
+            console.log(`Server Running ${PORT}`)
+        })
+    }catch(err){
+        console.error("Error connecting Database", err.message)
+    }
+};
+
+startServer();

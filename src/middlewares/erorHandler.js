@@ -1,10 +1,5 @@
+// handle any incoming errors
 export const errorHandler = (err, req, res, next) => {
-    try{
-        if(err){
-            return res.status(400).json({status: false, message: err.stack || 'Bad Request'})
-        }
-        next();
-    }catch(error){
-        res.status(503).json({message: 'Internal Server Error' || error.message})
-    }
+    console.error(err.stack);
+    res.status(500).json({message:err.message || 'Server Error'})
 };
