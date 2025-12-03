@@ -26,7 +26,7 @@
 
 1. Make sure you have **Node.js** installed 
  - [download from nodejs.org](https://nodejs.org/)
-2. Install MongoDB if you haven't done that already, create an account and cluster
+2. Install MySQL if you haven't done that already, create an account
  - https://www.mysql.com/products/workbench/
 3. Clone this repository 
  - git clone https://github.com/PelumiBG/SeatNow.git
