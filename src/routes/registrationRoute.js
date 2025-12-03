@@ -1,9 +1,9 @@
-import { userVlidate } from "../validator/userValidator.js";
 import { registerAttendee } from "../controllers/registrationController.js";
 import express from 'express';
+import { registerValidator } from "../validator/registrationValidator.js";
 
 const router = express.Router();
 
-router.post('/register-event', registerAttendee);
+router.post('/register-event', registerValidator, registerAttendee);
 
 export default router;

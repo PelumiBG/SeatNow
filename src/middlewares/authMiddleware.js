@@ -2,57 +2,45 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 
 // Middleware to protect routes
-export const protectAdmin = async (req, res, next) => {
-  let token;
-
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-        try {
-            token = req.headers.authorization.split(" ")[1];
-
-            //Verify token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id).select("-password");
-
-            if (!req.user) {
-                return res.status(401).json({ message: "Admin not found" });
-            }
-
-            next();
-        }   catch (error) {
-                console.log("Auth Header:", req.headers.authorization);
-                return res.status(401).json({ message: "Not authorized, token failed" });
-        }
-    }
-
-    if (!token) {
-        return res.status(401).json({ message: "Token not Detected" });
-    }
-};
-
-
 export const protectUser = async (req, res, next) => {
   let token;
 
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-        try {
-            token = req.headers.authorization.split(" ")[1];
+  try {
+    // Check Authorization header
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
 
-            //Verify token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id).select("-password");
+      // Verify the token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            if (!req.user) {
-                return res.status(401).json({ message: "User not found" });
-            }
+      // Find the user by the ID in the token
+      const user = await User.findOne({
+        where: { userId: decoded.userId },
+      });
 
-            next();
-        }   catch (error) {
-                console.log("Auth Header:", req.headers.authorization);
-                return res.status(401).json({ message: "Not authorized, token failed" });
-        }
+      if (!user) {
+        return res
+          .status(401)
+          .json({ status: false, message: "User account not found" });
+      }
+
+      req.user = user;
+      return next();  
     }
 
-    if (!token) {
-        return res.status(401).json({ message: "Token not Detected" });
-    }
+    // NO TOKEN FOUND
+    return res
+      .status(401)
+      .json({ status: false, message: "Token not detected" });
+
+  } catch (err) {
+    console.error("JWT Error:", err.message);
+
+    return res
+      .status(401)
+      .json({ status: false, message: "Not authorized, invalid token" });
+  }
 };

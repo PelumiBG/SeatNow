@@ -20,39 +20,3 @@ export const createEvent = async (req, res) => {
         res.status(503).json({status: false, message:err.message})
     }
 };
-
-export const listAllEvent = async (req, res) => {
-    try{
-        const event = await Event.findAll({order: ['createdAt']});
-
-        res.status(200).json({status:true,
-            message:'List of all event',
-            count: event.length,
-            data:event
-        })
-    }catch(err){
-        res.status(500).json({status: true, message:err.message})
-    }
-};
-
-export const deleteEvent = async (req, res) => {
-    try{
-        const { eventId } = req.params.eventId;
-
-        const existEvent = await Event.findOne({where:{id: eventId}});
-
-        if(!existEvent) return res.status(404).json({status: false, message:'Event Not Listed'});
-        
-        await existEvent.destroy();
-
-        res.status(200).
-        json({
-            status: true,
-            message:'Event Deleted Successfully'
-        })
-    }catch (err) {
-        res.status(503).json({status:false,
-            message:err.message
-        })
-    }
-}

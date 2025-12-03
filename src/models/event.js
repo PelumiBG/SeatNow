@@ -1,5 +1,6 @@
 import { DataTypes, Sequelize } from "sequelize";
 import sequelize from "../configs/db.js";
+import { Register } from "./registration.js";
 
 export const Event = sequelize.define('Event',{
     eventId: {
