@@ -1,5 +1,6 @@
 import { Register } from "../models/registration.js";
 import { generateToken } from "../utils/generateToken.js";
+import { Event } from "../models/event.js";
 
 export const registerAttendee = async (req, res) => {
     try {
@@ -15,7 +16,7 @@ export const registerAttendee = async (req, res) => {
                 status: false,
                 message: "You already booked a seat for this event"
             });
-        }
+        };
 
         // Create booking
         const booking = await Register.create({
@@ -48,22 +49,45 @@ export const registerAttendee = async (req, res) => {
     }
 };
 
+export const getOneBooking = async (req, res) => {
+    try{
+        const { userId } = req.params;
 
-export const listAttendees = async (req, res) => {
-    try {
-        const { eventId } = req.params;
+        const book = await Register.findOne({ where: { userId }});
 
-        const attendees = await Register.findAll({
-            where: { eventId }
-        });
+        if(!book){
+            return res.status(404).json({status: false, message:"You're yet to register for any Event"})
+        };
 
-        res.status(200).json({
-            status: true,
-            message: "List of Attendees",
-            data: attendees
-        });
+        return res.status(200)
+        .json({ status: true, message:"List of Event Registered to by User", book})
 
-    } catch (err) {
-        res.status(500).json({ status: false, message: err.message });
+    }catch(err){
+        return res.status(503).json({status: false, message: err.message})
     }
-};
+}
+
+export const cancelBooking = async (req, res) => {
+    try{
+        const { eventId, userId } = req.params;
+
+        const event = await Register.findOne({ where: { eventId, userId }});
+
+        if(!event){
+            return res.status(401).json({ status: false, message: "Event Is not found"})
+        };
+
+        if(event.status === 'cancelled'){
+            return res.status(400).json({ status: false, message:"Event cancelled for user"})
+        };
+
+        await event.update({status:"cancelled"});
+        await event.save();
+
+        return res.status(200).json({ status: true, message: "Event Cancelled Successfully", event})
+
+    }catch(err){
+        return res.status(503)
+        .json({ status: false, message: err.message})
+    }
+}

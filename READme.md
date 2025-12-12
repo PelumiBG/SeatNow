@@ -108,4 +108,7 @@ Job-Board-App/
 
 1. SeatNow is an Event app that allows organizers to book a space 
 2. Event Organizers Register their event on the app
-3. Users can register an account to book a seat
+3. Users can register an account to book a seat.
+
+## Future Improvement
+1. Add Admin Dashboard.

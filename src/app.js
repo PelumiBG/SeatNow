@@ -8,10 +8,13 @@ import userRoute from './routes/authRoute.js';
 import eventRoute from './routes/eventRoute.js';
 import attendeeRoute from './routes/registrationRoute.js';
 import appAdmin from './services/admin.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
-// await connectDatabase();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -20,16 +23,17 @@ app.use(cors({origin:'https://localhost/4000/'}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.set('view engine','ejs');
+app.set('views', './view')
 
 // API health routes
 app.get('/', (req, res) => {
-    res.status(200).json({status: 'OK', message:'SeatNow Running.....'})
+    res.status(200).render('index', {status: 'OK', message:'SeatNow Running.....'})
 });
 
 // API endpoint
-app.use('/api/user', userRoute);
+app.use('/api/auth', userRoute);
 app.use('/api/event', eventRoute);
-app.use('/api/register', attendeeRoute)
+app.use('/api/user', attendeeRoute)
 
 // Error Handler
 app.use(errorHandler);

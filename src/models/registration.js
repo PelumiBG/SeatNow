@@ -33,5 +33,9 @@ export const Register = sequelize.define('Register',{
         type:DataTypes.INTEGER,
         allowNull: false,
         validate: {min:18, max:120}
+    },
+    status: {
+        type:DataTypes.ENUM("active","cancelled"),
+        defaultValue: "active"
     }
 }, {timestamps: true});
