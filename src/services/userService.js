@@ -9,7 +9,7 @@ export const registerUser = async (req, res) => {
 
         const existUser = await User.findOne({where: {email}})
         if(existUser) return res.status(409).json({status:false,
-            message:'Account Registered Aleady'
+            message:'Account Registered Already'
         });
 
         const newUser = await User.create({

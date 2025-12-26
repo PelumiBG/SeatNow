@@ -9,11 +9,8 @@ const appAdmin = async () => {
         });
 
         if (existAdmin) {
-            return console.log({
-                status: false,
-                message: 'Admin already exist'
-            });
-        }
+            return existAdmin;
+        };
 
         const secPassword = await bcrypt.hash('Pelumi124', 10);
 

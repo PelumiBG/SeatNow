@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import { sequelize } from './configs/db.js';
-import { errorHandler } from './middlewares/erorHandler.js';
+import errorHandler from './middlewares/erorHandler.js';
 import userRoute from './routes/authRoute.js';
 import eventRoute from './routes/eventRoute.js';
 import attendeeRoute from './routes/registrationRoute.js';
@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(helmet())
-app.use(cors({origin:'https://localhost/4000/'}));
+app.use(cors({origin:'https://localhost:4000/'}));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.set('view engine','ejs');
